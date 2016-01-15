@@ -1,0 +1,32 @@
+#!/bin/sh
+
+EXEC_HOSTS=$HOME/.e/ehosts
+case $1 in
+    s)
+        EXEC_ARGS=`grep ^s.$2: $EXEC_HOSTS`
+        e_s $EXEC_ARGS
+        ;;
+    put)
+        EXEC_ARGS=`grep ^s.$2: $EXEC_HOSTS`
+        e_put $EXEC_ARGS $3 $4
+        ;;
+    get)
+        EXEC_ARGS=`grep ^s.$2: $EXEC_HOSTS`
+        e_get $EXEC_ARGS $3 $4
+        ;;
+    e)
+        EXEC_ARGS=`grep ^s.$2: $EXEC_HOSTS`
+        shift 2
+        e_e $EXEC_ARGS $@
+        ;;
+    all)
+        shift
+        while read EXEC_ARGS ; do
+            e_e $EXEC_ARGS $@
+        done < $EXEC_HOSTS
+        ;;
+    *)
+        cat $EXEC_HOSTS
+        ;;
+esac
+

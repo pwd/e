@@ -1,0 +1,20 @@
+#!/usr/bin/env expect -f
+
+set timeout 60
+set host [lindex $argv 1]
+set passwd [lindex $argv 2]
+set port [lindex $argv 3]
+set sendpass [lindex $argv 4]
+set localpath [lindex $argv 5]
+set remotepath [lindex $argv 6]
+if {$argc==7} {
+    spawn scp -r $localpath $host:$remotepath
+    if {$sendpass=="pass"} {
+        expect "*?assword:*"
+        send "$passwd\r"
+    }
+    send "\r"
+    expect eof
+}
+exit
+

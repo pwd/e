@@ -1,0 +1,18 @@
+#!/usr/bin/expect -f
+
+set timeout 60
+set host [lindex $argv 1]
+set passwd [lindex $argv 2]
+set port [lindex $argv 3]
+set sendpass [lindex $argv 4]
+if {$argc>=4} {
+    spawn ssh $host -p$port
+    if {$sendpass=="pass"} {
+        expect "*?assword:*"
+        send "$passwd\r"
+    }
+    send "\r"
+    interact
+}
+exit
+
