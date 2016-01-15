@@ -1,6 +1,9 @@
 #!/bin/sh
 
-EXEC_HOSTS=$HOME/.e/ehosts
+if [ -z $EXEC_HOSTS ]; then
+    EXEC_HOSTS=$HOME/.e/ehosts
+fi
+
 case $1 in
     s)
         EXEC_ARGS=`grep ^s.$2: $EXEC_HOSTS`
@@ -20,10 +23,12 @@ case $1 in
         e_e $EXEC_ARGS $@
         ;;
     all)
-        shift
-        while read EXEC_ARGS ; do
+        ALL_LIST=$2
+        shift 2
+        while read HOSTNAME ; do
+            EXEC_ARGS=`grep ^s.$HOSTNAME: $EXEC_HOSTS`
             e_e $EXEC_ARGS $@
-        done < $EXEC_HOSTS
+        done < $ALL_LIST
         ;;
     *)
         cat $EXEC_HOSTS
